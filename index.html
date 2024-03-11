@@ -40,20 +40,16 @@
                 <form>
                     <form>
                         <div class="form-group mb-3">
-                            <label class="form-label mb-0" for="txtEmail">Email Address</label>
-                            <input class="form-control"  id="txtEmail" type="email"> <!--Added types-->
+                            <label class="form-label" for="txtEmail">Email Address</label>
+                            <input class="form-control"  id="txtEmail" type="email"> 
                         </div>
                         <div class="form-group mb-3">
-                            <label class="form-label mb-0" for="txtFirstName">First Name</label>
-                            <input class="form-control"  id="txtFirstName" type="text">
-                        </div>
-                        <div class="form-group mb-3">
-                            <label class="form-label mb-0" for="txtLastName">Last Name</label>
-                            <input class="form-control"  id="txtLastName" type="text">
+                            <label class="form-label" for="txtUserName">Username</label>
+                            <input class="form-control"  id="txtUserName" type="text">
                         </div>
                         <div class="form-group">
-                            <label class="form-label mb-0" for="txtPassword">Password</label>
-                            <input class="form-control"  id="txtPassword" type="password">
+                            <label class="form-label" for="txtPass">Password</label>
+                            <input class="form-control"  id="txtPass" type="password">
                         </div>
                     </form>
                 </form>
@@ -66,8 +62,13 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         //test
+        const passwordRegex = /[a-zA-Z0-9_.+-]{4,}/;
+        const emailRegex = /([a-zA-Z0-9_.+-]+)@[a-zA-Z0-9_.+-]+\.[a-zA-Z0-9.+-]/;
+
+
         $(".btnToggle").on("click", function(){
             let currDiv = 'div'
             let otherDiv = 'divRegister'
@@ -80,6 +81,46 @@
             $('#' + currDiv).slideUp(function(){
                 $('#' + otherDiv).slideDown();
             })
+        })
+
+        $("#btnRegister").on('click', function() {
+            let email = $("#txtEmail").val()
+            let username = $("#txtUserName").val()
+            let password = $("#txtPass").val()
+            let btnError = false
+            let errorMsg = ""
+            console.log(email + ' ' + username + ' ' + password)
+
+            if (!emailRegex.test(email)) {
+                btnError = true
+                errorMsg += "Email not found. "
+            }
+            if (username.length < 4) {
+                btnError = true
+                errorMsg += "Username not found. "
+            }
+            if (!passwordRegex.test(password)) {
+                btnError = true
+                errorMsg += "Password not found. "
+            }
+
+            if(btnError == true) {
+                Swal.fire({
+                    title: "Error",
+                    html: errorMsg,
+                    icon: "error"
+                })
+            }
+            else {
+                Swal.fire({
+                    title: "Success",
+                    html: "Account created successfully",
+                    icon: "success"
+                })
+                $("#divRegister").slideToggle(function(){
+                    $("#divLogin").slideToggle()
+                })
+            }
         })
     </script>
 </body>
